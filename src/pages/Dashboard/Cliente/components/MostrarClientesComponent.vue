@@ -7,14 +7,15 @@
       <div class="row">
         <h2 class="display-3 text-center">Clientes Cadastrados</h2>
       </div>
-      <table class="table table-striped">
+      <table class="table table-striped text-center">
         <thead>
           <tr>
             <th scope="col">#</th>
             <th scope="col">Nome</th>
             <th scope="col">CPF</th>
             <th scope="col">Email</th>
-            <th scope="col">Action</th>
+            <th scope="col">JSON</th>
+            <th scope="col">XML</th>
           </tr>
         </thead>
         <tbody v-for="cliente of clientes" :key="cliente.id">
@@ -24,7 +25,12 @@
             <td>{{cliente.cpf}}</td>
             <td>{{cliente.email}}</td>
             <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="buscarCliente(cliente.id)">
+              <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="buscarCliente(cliente.id)">
+                <i class="material-icons">visibility</i>
+              </button>
+            </td>
+            <td>
+                            <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="buscarClienteXml(cliente.id)">
                 <i class="material-icons">visibility</i>
               </button>
             </td>
@@ -38,6 +44,22 @@
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">{{cliente != null ? cliente.nome : ''}}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{cliente}}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+                    <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true" v-if="cliente != null">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"></h5>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -94,6 +116,18 @@ export default {
         .get(`/${id}`)
         .then(res => {
           this.cliente = res.data.objeto
+        })
+    },
+    buscarClienteXml (id) {
+      axios.create({
+        headers: {
+          // eslint-disable-next-line quote-props
+          'Authorization': 'Bearer ' + TOKEN
+        }
+      })
+        .get(`http://localhost:8080/api/xml/cliente/${id}`)
+        .then(res => {
+          this.cliente = res.data
         })
     }
   },

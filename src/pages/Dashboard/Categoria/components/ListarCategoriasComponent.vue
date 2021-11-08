@@ -9,19 +9,26 @@
       </div>
       <table class="table table-striped">
         <thead>
-          <tr>
+          <tr class="text-center">
             <th scope="col">#</th>
             <th scope="col">Nome</th>
             <th scope="col">Descrição</th>
+            <th scope="col">JSON</th>
+            <th scope="col">XML</th>
           </tr>
         </thead>
         <tbody v-for="categoria of categorias" :key="categoria.id">
           <tr class="text-center">
-            <th scope="row">{{categoria.id}}</th>
+            <td>{{categoria.id}}</td>
             <td>{{categoria.nome}}</td>
             <td>{{categoria.descricao}}</td>
             <td>
-              <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="buscarCategoria(categoria.id)">
+              <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal" data-bs-target="#exampleModal" @click="buscarCategoria(categoria.id)">
+                <i class="material-icons">visibility</i>
+              </button>
+            </td>
+            <td>
+              <button type="button" class="btn btn-outline-warning" data-bs-toggle="modal" data-bs-target="#exampleModal2" @click="buscarCategoriaXml(categoria.id)">
                 <i class="material-icons">visibility</i>
               </button>
             </td>
@@ -46,6 +53,22 @@
               </div>
             </div>
           </div>
+          <div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true" v-if="categoria != null">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel"></h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {{categoria}}
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+              </div>
+            </div>
+          </div>
 </template>
 <script>
 const axios = require('axios')
@@ -58,6 +81,7 @@ export default {
     return {
       categorias: [],
       categoria: null,
+      xml: null,
       mensagem: null
     }
   },
@@ -90,6 +114,18 @@ export default {
         .get(`/${id}`)
         .then(res => {
           this.categoria = res.data.objeto
+        })
+    },
+    buscarCategoriaXml (id) {
+      axios.create({
+        headers: {
+          // eslint-disable-next-line quote-props
+          'Authorization': 'Bearer ' + TOKEN
+        }
+      })
+        .get(`http://localhost:8080/api/xml/categoria/${id}`)
+        .then(res => {
+          this.categoria = res.data
         })
     }
   },

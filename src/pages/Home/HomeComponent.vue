@@ -1,5 +1,6 @@
 <template>
   <div class="row">
+    <h1 class="display-2 text-center">Bem vindo de volta, <span class="text-success">{{name}}</span></h1>
     <div class="col-2">
       <SideBarComponent />
     </div>
@@ -18,9 +19,14 @@ export default {
     // DashboardComponent
     SideBarComponent
   },
+  data () {
+    return {
+      name: window.localStorage.getItem('nome')
+    }
+  },
   methods: {
     showMessage () {
-      this.$swal('Bem vindo!', `Olá novamente, ${window.localStorage.getItem('nome')}`, 'success')
+      this.$swal('Bem vindo!', `Olá novamente, ${this.name}`, 'success')
     }
   },
   mounted () {

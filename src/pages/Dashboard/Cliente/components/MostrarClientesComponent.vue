@@ -132,7 +132,7 @@ export default {
     }
   },
   mounted () {
-    setTimeout(() => { this.listarClientes() }, 2000)
+    setInterval(() => { this.listarClientes() }, 2000)
   }
 
 }

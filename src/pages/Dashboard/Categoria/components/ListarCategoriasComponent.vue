@@ -129,8 +129,10 @@ export default {
         })
     }
   },
+  // watch:{
+  // },
   mounted () {
-    setTimeout(() => { this.listarCategorias() }, 2000)
+    setInterval(() => { this.listarCategorias() }, 2000)
   }
 }
 </script>
